@@ -2,8 +2,8 @@ import wave
 import random
 import base64
 
-from helper.file import File
-from vigenere.cipher import encrypt_vigenere
+from src.helper.file import File
+from src.vigenere.cipher import encrypt_vigenere
 
 
 class Inserter:
@@ -49,7 +49,7 @@ class Inserter:
                 self.frame[i] = self.frame[i] & 254 | array_bit[index]
                 index += 1
 
-    def insert_message(self, encrypted=False, randomize_bytes=False, randomize_frames=False):
+    def insert_message(self, encrypted=False, randomize=False):
         self.seed = self.count_seed()
 
         len_message = str(len(self.message))
@@ -61,7 +61,7 @@ class Inserter:
         array_bit = list(bits)
 
         self.frame_list = list(range(len(self.frame)))
-        self.random_frame(randomize_frames)
+        self.random_frame(randomize)
         self.modify_frame(array_bit)
 
         return bytes(self.frame)
