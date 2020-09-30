@@ -69,23 +69,6 @@ class Extractor:
 
         self.len_message = int(message_info[0])
         self.extension = message_info[1]
-        # self.message = message_info[2]
-
-        # length = ""
-        # extension = ""
-        # i = 0
-
-        # while self.string_message[i] != '#':
-        #     length += self.string_message[i]
-        #     i += 1
-
-        # i += 1
-        # while self.string_message[i] != '#':
-        #     extension += self.string_message[i]
-        #     i += 1
-
-        # self.len_message = int(length)
-        # self.extension = extension
 
     def write_secret_message(self):
         init = len(str(self.len_message)) + \
