@@ -1,5 +1,5 @@
 import tkinter as tk
-import tkinter.filedialog as tkfd
+import tkinter.filedialog as fd
 import src.helper.gui as hg
 
 from src.audio.insertor import Inserter
@@ -99,14 +99,13 @@ class AudioInsertionForm(tk.Frame):
                          lambda: self.controller.show_frame("StartPage"), 0, 1)
 
     def load_audio_file(self):
-        self.audio_dir.set(
-            tkfd.askopenfilename(
-                filetypes=((".WAV Audio", "*.wav"),)
-            )
+        dialog = fd.askopenfilename(
+            filetypes=((".WAV Audio", "*.wav"),)
         )
+        self.audio_dir.set(dialog)
 
     def load_secret_message(self):
-        self.message_dir.set(tkfd.askopenfilename())
+        self.message_dir.set(fd.askopenfilename())
 
     def execute(self):
         print('Insertion Started!')
@@ -131,7 +130,7 @@ class AudioInsertionForm(tk.Frame):
             encrypted=self.encrypt.get(),
         )
 
-        output_file = File("output/" + output_filename)
+        output_file = File("output/" + output_filename + ".wav")
         output_file.write_audio_file(frame_modified, insert.params)
 
         print('Insertion Finished!')
