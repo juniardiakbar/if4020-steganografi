@@ -2,8 +2,8 @@ import wave
 import random
 import base64
 
-from helper.file import File
-from vigenere.cipher import decrypt_vigenere
+from src.helper.file import File
+from src.vigenere.cipher import decrypt_vigenere
 
 
 class Extractor:

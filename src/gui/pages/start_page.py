@@ -20,24 +20,32 @@ class StartPage(tk.Frame):
         )
         heading.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
 
-        menu_elements = [
-            {"text": "Hide mesage to picture", "command": self.donothing},
-            {"text": "Extract mesage to picture", "command": self.donothing},
-            {"text": "Hide mesage to audio",
-                "command": lambda: controller.show_frame("AudioInsertionForm")},
-            {"text": "Extract mesage to audio", "command": self.donothing},
-            {"text": "Hide mesage to video", "command": self.donothing},
-            {"text": "Extract mesage to video", "command": self.donothing}
+        text_elements = [
+            "Hide mesage to picture",
+            "Extract mesage from picture",
+            "Hide mesage to audio",
+            "Extract mesage from audio",
+            "Hide mesage to video",
+            "Extract mesage from video"
+        ]
+
+        command_elements = [
+            self.donothing,
+            self.donothing,
+            lambda: controller.show_frame("AudioInsertionForm"),
+            lambda: controller.show_frame("AudioExtractForm"),
+            self.donothing,
+            self.donothing
         ]
 
         index = 0
-        for el in menu_elements:
+        for text in text_elements:
             button = tk.Button(
                 self,
                 bg='white',
                 fg='black',
-                text=el["text"],
-                command=el["command"],
+                text=text,
+                command=command_elements[index],
                 width=50,
                 height=2
             )

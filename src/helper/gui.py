@@ -9,14 +9,14 @@ def insert_header(container, text):
         text=text,
         font='none 24 bold'
     )
-    heading.place(relx=0.25, rely=0.1, anchor=tk.W)
+    heading.place(relx=0.15, rely=0.1, anchor=tk.W)
 
 
 def create_frame(container, row):
     frame = tk.Frame(container)
     frame.configure(bg='white')
     frame.place(
-        relx=0.25,
+        relx=0.15,
         rely=(0.1 * row),
         anchor=tk.W
     )
