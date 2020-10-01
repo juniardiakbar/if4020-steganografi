@@ -1,7 +1,7 @@
 import tkinter as tk
 
 from src.gui.pages.start_page import StartPage
-from src.gui.pages.insert_audio_form import AudioInsertionForm
+from src.gui.pages.audio.insert_form import AudioInsertionForm
 
 
 class App(tk.Tk):
