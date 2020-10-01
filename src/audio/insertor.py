@@ -3,7 +3,7 @@ import random
 import base64
 
 from src.helper.file import File
-from src.vigenere.cipher import encrypt_vigenere
+from src.helper.cipher import encrypt_vigenere
 
 
 class Inserter:
