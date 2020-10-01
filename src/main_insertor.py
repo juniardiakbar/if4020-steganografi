@@ -2,7 +2,7 @@ from audio.insertor import Inserter
 from helper.file import File
 
 
-file_dir = 'sample/audio/gs-16b-2c-44100hz.wav'
+file_dir = 'sample/audio/StarWars3.wav'
 secret_message_dir = 'sample/text/message.txt'
 key = "kuncirahasia"
 
