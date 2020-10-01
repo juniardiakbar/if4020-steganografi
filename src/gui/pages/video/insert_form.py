@@ -2,18 +2,18 @@ import tkinter as tk
 import tkinter.filedialog as fd
 import src.helper.gui as hg
 
-from src.audio.insertor import Inserter
-from src.helper.file import File
+# from src.audio.insertor import Inserter
+# from src.helper.file import File
 
 
-class AudioInsertionForm(tk.Frame):
+class VideoInsertionForm(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
         self.controller = controller
         self.initialize()
 
-        hg.insert_header(self, 'Steganografi Insert Audio')
+        hg.insert_header(self, 'Steganografi Insert Video')
 
         self.render_file_frame()
         self.render_message_frame()
@@ -35,8 +35,10 @@ class AudioInsertionForm(tk.Frame):
 
         self.encrypt = tk.IntVar()
         self.encrypt.set(0)
-        self.random = tk.IntVar()
-        self.random.set(0)
+        self.random_frame = tk.IntVar()
+        self.random_frame.set(0)
+        self.random_pixel = tk.IntVar()
+        self.random_pixel.set(0)
 
         self.audio_dir = tk.StringVar()
         self.audio_dir.set('')
@@ -54,9 +56,6 @@ class AudioInsertionForm(tk.Frame):
         hg.create_label(file_frame, self.audio_dir, 0, 1, fix_text=False)
         hg.create_button(file_frame, 'Choose',
                          lambda: self.load_audio_file(), 1, 0)
-
-        hg.create_button(file_frame, 'Play Sound',
-                         lambda: hg.play_audio_file(self.audio_dir.get()), 1, 1)
 
     def render_message_frame(self):
         msg_frame = hg.create_frame(self, self.MESSAGE_ROW + 1)
@@ -79,13 +78,15 @@ class AudioInsertionForm(tk.Frame):
         hg.create_check_button(
             option_frame, 'Encrypt Message', self.encrypt, 1, 0)
         hg.create_check_button(
-            option_frame, 'Random Frame', self.random, 1, 1)
+            option_frame, 'Random Frame', self.random_frame, 1, 1)
+        hg.create_check_button(
+            option_frame, 'Random Pixel', self.random_pixel, 1, 2)
 
     def render_output_frame(self):
         output_frame = hg.create_frame(self, self.OUTPUT_ROW + 1)
 
         hg.create_label(output_frame, 'Output file\'s name:', 0, 0)
-        hg.create_label(output_frame, '.wav', 1, 1)
+        hg.create_label(output_frame, '.avi', 1, 1)
         self.output_name = hg.create_entry(
             output_frame, self.DEFAULT_OUT_FILENAME, 1, 0)
 
@@ -100,7 +101,7 @@ class AudioInsertionForm(tk.Frame):
 
     def load_audio_file(self):
         dialog = fd.askopenfilename(
-            filetypes=((".WAV Audio", "*.wav"),)
+            filetypes=((".AVI Videos", "*.avi"),)
         )
         self.audio_dir.set(dialog)
 
@@ -112,33 +113,25 @@ class AudioInsertionForm(tk.Frame):
         print('> Audio dir:', self.audio_dir.get())
         print('> Message dir:', self.message_dir.get())
         print('> Key:', self.key_entry.get())
-        print('> Random:', self.random.get())
+        print('> Random:', self.random_frame.get())
         print('> Encrypt:', self.output_name.get())
 
-        file_dir = self.audio_dir.get()
-        message_dir = self.message_dir.get()
-        key = self.key_entry.get()
-        output_filename = self.output_name.get()
+        # file_dir = self.audio_dir.get()
+        # message_dir = self.message_dir.get()
+        # key = self.key_entry.get()
+        # output_filename = self.output_name.get()
 
-        try:
-            if file_dir == '' or message_dir == '' or key == '' or output_filename == '':
-                return
+        # if file_dir == '' or message_dir == '' or key == '' or output_filename == '':
+        #     return
 
-            insert = Inserter(file_dir, message_dir, key)
+        # insert = Inserter(file_dir, message_dir, key)
 
-            frame_modified = insert.insert_message(
-                randomize=self.random.get(),
-                encrypted=self.encrypt.get(),
-            )
+        # frame_modified = insert.insert_message(
+        #     randomize=self.random_frame.get(),
+        #     encrypted=self.encrypt.get(),
+        # )
 
-            file_name = "output/" + output_filename + ".wav"
-            output_file = File(file_name)
-            output_file.write_audio_file(frame_modified, insert.params)
+        # output_file = File("output/" + output_filename + ".wav")
+        # output_file.write_audio_file(frame_modified, insert.params)
 
-            print('Insertion Finished!')
-
-            title = "Finish Insert Secret Message to Audio"
-            self.controller.show_end_frame(title, "Audio", file_name)
-
-        except:
-            print("Error occured while insert secret message")
+        print('Insertion Finished!')

@@ -34,8 +34,8 @@ class StartPage(tk.Frame):
             self.donothing,
             lambda: controller.show_frame("AudioInsertionForm"),
             lambda: controller.show_frame("AudioExtractForm"),
-            self.donothing,
-            self.donothing
+            lambda: controller.show_frame("VideoInsertionForm"),
+            lambda: controller.show_frame("VideoExtractForm"),
         ]
 
         index = 0

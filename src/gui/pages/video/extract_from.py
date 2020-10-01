@@ -2,18 +2,18 @@ import tkinter as tk
 import tkinter.filedialog as fd
 import src.helper.gui as hg
 
-from src.audio.extractor import Extractor
-from src.helper.file import File
+# from src.audio.extractor import Extractor
+# from src.helper.file import File
 
 
-class AudioExtractForm(tk.Frame):
+class VideoExtractForm(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
         self.controller = controller
         self.initialize()
 
-        hg.insert_header(self, 'Steganografi Extract Audio')
+        hg.insert_header(self, 'Steganografi Extract Video')
 
         self.render_file_frame()
         self.render_key_frame()
@@ -77,27 +77,19 @@ class AudioExtractForm(tk.Frame):
         print('> Audio dir:', self.audio_dir.get())
         print('> Key:', self.key_entry.get())
 
-        file_dir = self.audio_dir.get()
-        key = self.key_entry.get()
-        output_filename = self.output_name.get()
+        # file_dir = self.audio_dir.get()
+        # key = self.key_entry.get()
+        # output_filename = self.output_name.get()
 
-        try:
-            if file_dir == '' or key == '' or output_filename == '':
-                return
+        # if file_dir == '' or key == '' or output_filename == '':
+        #     return
 
-            extract = Extractor(file_dir, key)
-            extract.extract_messages()
-            extract.parse_message()
+        # extract = Extractor(file_dir, key)
+        # extract.extract_messages()
+        # extract.parse_message()
 
-            file_name = "output/" + output_filename + "." + extract.extension
-            output_file = File(file_name)
-            byte = extract.write_secret_message()
-            output_file.write_files(byte)
+        # output_file = File("output/" + output_filename + ".txt")
+        # byte = extract.write_secret_message()
+        # output_file.write_files(byte)
 
-            print('Extraction Finished!')
-
-            title = "Finish Extract Secret Message from Audio"
-            self.controller.show_end_frame(title, "None", file_name)
-
-        except:
-            print("Error occured while extract secret message")
+        print('Extraction Finished!')

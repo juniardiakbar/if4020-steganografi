@@ -1,4 +1,5 @@
 import tkinter as tk
+import simpleaudio as sa
 
 
 def insert_header(container, text):
@@ -76,3 +77,13 @@ def create_entry(master, default, row, col):
         entry.insert(tk.END, default)
 
     return entry
+
+
+def play_audio_file(audio_dir):
+    print(audio_dir)
+    try:
+        wave_obj = sa.WaveObject.from_wave_file(audio_dir)
+        wave_obj.play()
+
+    except:
+        print("Failed to play sound")
