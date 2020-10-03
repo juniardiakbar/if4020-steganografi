@@ -30,8 +30,8 @@ class StartPage(tk.Frame):
         ]
 
         command_elements = [
-            self.donothing,
-            self.donothing,
+            lambda: controller.show_frame("ImageInsertionForm"),
+            lambda: controller.show_frame("ImageExtractForm"),
             lambda: controller.show_frame("AudioInsertionForm"),
             lambda: controller.show_frame("AudioExtractForm"),
             lambda: controller.show_frame("VideoInsertionForm"),

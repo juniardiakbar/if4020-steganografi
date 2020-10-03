@@ -4,6 +4,8 @@ from src.gui.pages.start_page import StartPage
 from src.gui.pages.end_page import EndPage
 from src.gui.pages.audio.insert_form import AudioInsertionForm
 from src.gui.pages.audio.extract_from import AudioExtractForm
+from src.gui.pages.image.insert_form import ImageInsertionForm
+from src.gui.pages.image.extract_from import ImageExtractForm
 from src.gui.pages.video.insert_form import VideoInsertionForm
 from src.gui.pages.video.extract_from import VideoExtractForm
 
@@ -18,7 +20,7 @@ class App(tk.Tk):
         self.container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, AudioInsertionForm, AudioExtractForm, VideoInsertionForm, VideoExtractForm):
+        for F in (StartPage, AudioInsertionForm, AudioExtractForm, ImageInsertionForm, ImageExtractForm, VideoInsertionForm, VideoExtractForm):
             page_name = F.__name__
 
             frame = F(parent=self.container, controller=self)

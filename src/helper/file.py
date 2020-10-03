@@ -1,9 +1,18 @@
 import wave
+import cv2
 
 
 class File:
     def __init__(self, filename):
         self.filename = filename
+
+    def read_ndarray_image_file(self):
+        return cv2.imread(self.filename)
+
+    def write_image_file(self, image):
+        cv2.imwrite(self.filename, image)
+        print('---')
+        print(image[0][0][0])
 
     def read_frame_audio_file(self):
         song = wave.open(self.filename, mode='rb')
