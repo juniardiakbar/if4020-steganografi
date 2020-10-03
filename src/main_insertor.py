@@ -14,6 +14,6 @@ frame_modified = insert.insert_message(
     encrypted=False,
 )
 
-output_filename = 'sample/audio/output.wav'
+output_filename = 'output/output.wav'
 output_file = File(output_filename)
 output_file.write_audio_file(frame_modified, insert.params)

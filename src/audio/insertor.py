@@ -41,18 +41,19 @@ class Inserter:
 
     def modify_frame(self, array_bit):
         index = 0
-        self.frame[2] = self.frame[2] & 254 | 0
         for i in self.frame_list:
             if index >= len(array_bit):
                 break
-            if i >= 3:
+            if i >= 2:
                 self.frame[i] = self.frame[i] & 254 | array_bit[index]
                 index += 1
 
     def insert_message(self, encrypted=False, randomize_bytes=False, randomize_frames=False):
         self.seed = self.count_seed()
 
-        len_message = str(len(self.message))
+        len_message = len(self.message) + len(self.extension) + 2
+        len_message = str(len_message + len(str(len_message)))
+
         self.string_message = len_message + '#' + self.extension + '#' + self.message
         self.encrypt_message(encrypted, self.key)
 

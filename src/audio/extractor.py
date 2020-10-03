@@ -20,24 +20,15 @@ class Extractor:
         # Get sign from LSB
         encrypted = bin(self.frame[0])[-1] == '1'
         random_frames = bin(self.frame[1])[-1] == '1'
-        opt = 2 if bin(self.frame[2])[-1] == '1' else 1
 
         self.seed = self.count_seed()
+        extracted = [self.frame[i] & 1 for i in range(len(self.frame))]
 
         index = 0
-        temp = ""
+        mod_index = 8
+
         message = ""
-
-        # Extract the LSB of each byte
-        if opt == 1:
-            mod_index = 8
-            extracted = [self.frame[i] & 1 for i in range(len(self.frame))]
-
-        # Extract the 2 LSB of each byte
-        elif opt == 2:
-            mod_index = 4
-            extracted = [bin(self.frame[i] & 3).lstrip('0b').rjust(
-                2, '0') for i in range(len(self.frame))]
+        temp = ""
 
         # Handling random frame case
         frame_list = list(range(len(extracted)))
@@ -70,13 +61,10 @@ class Extractor:
         self.len_message = int(message_info[0])
         self.extension = message_info[1]
 
-    def write_secret_message(self):
-        init = len(str(self.len_message)) + \
-            len(str(self.extension)) + 2  # Get init index
+    def get_secret_message(self):
+        init = len(str(self.len_message)) + len(str(self.extension)) + 2
         decoded = self.string_message[init:init + self.len_message]
 
         # Convert to bytes
         bytes_file = decoded.encode('utf-8')
-        bytes_file = base64.b64decode(bytes_file)
-
-        return bytes_file
+        return base64.b64decode(bytes_file)
