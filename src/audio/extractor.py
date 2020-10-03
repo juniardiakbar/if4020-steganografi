@@ -23,26 +23,10 @@ class Extractor:
         extracted = [self.frame[i] & 1 for i in range(len(self.frame))]
 
         index = 0
-
-
-<< << << < HEAD
         mod_index = 8
 
         message = ""
         temp = ""
-== == == =
-        temp = ""
-        message = ""
-
-        if opt == 1:
-            mod_index = 8
-            extracted = [self.frame[i] & 1 for i in range(len(self.frame))]
-
-        elif opt == 2:
-            mod_index = 4
-            extracted = [bin(self.frame[i] & 3).lstrip('0b').rjust(
-                2, '0') for i in range(len(self.frame))]
->>>>>> > gui-audio
 
         frame_list = list(range(len(extracted)))
         if random_frames:
