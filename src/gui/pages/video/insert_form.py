@@ -2,8 +2,8 @@ import tkinter as tk
 import tkinter.filedialog as fd
 import src.helper.gui as hg
 
-# from src.audio.insertor import Inserter
-# from src.helper.file import File
+from src.video.insertor import Inserter
+from src.helper.video_file import *
 
 
 class VideoInsertionForm(tk.Frame):
@@ -40,8 +40,8 @@ class VideoInsertionForm(tk.Frame):
         self.random_pixel = tk.IntVar()
         self.random_pixel.set(0)
 
-        self.audio_dir = tk.StringVar()
-        self.audio_dir.set('')
+        self.video_dir = tk.StringVar()
+        self.video_dir.set('')
 
         self.message_dir = tk.StringVar()
         self.message_dir.set('')
@@ -52,10 +52,12 @@ class VideoInsertionForm(tk.Frame):
     def render_file_frame(self):
         file_frame = hg.create_frame(self, self.FILE_ROW + 1)
 
-        hg.create_label(file_frame, 'Audio', 0, 0)
-        hg.create_label(file_frame, self.audio_dir, 0, 1, fix_text=False)
+        hg.create_label(file_frame, 'Video', 0, 0)
+        hg.create_label(file_frame, self.video_dir, 0, 1, fix_text=False)
         hg.create_button(file_frame, 'Choose',
-                         lambda: self.load_audio_file(), 1, 0)
+                         lambda: self.load_video_file(), 1, 0)
+        hg.create_button(file_frame, 'Play Video',
+                         lambda: hg.play_video_file(self.video_dir.get()), 1, 1)
 
     def render_message_frame(self):
         msg_frame = hg.create_frame(self, self.MESSAGE_ROW + 1)
@@ -99,39 +101,63 @@ class VideoInsertionForm(tk.Frame):
         hg.create_button(execute_frame, 'Back',
                          lambda: self.controller.show_frame("StartPage"), 0, 1)
 
-    def load_audio_file(self):
+    def load_video_file(self):
         dialog = fd.askopenfilename(
             filetypes=((".AVI Videos", "*.avi"),)
         )
-        self.audio_dir.set(dialog)
+        self.video_dir.set(dialog)
 
     def load_secret_message(self):
         self.message_dir.set(fd.askopenfilename())
 
     def execute(self):
         print('Insertion Started!')
-        print('> Audio dir:', self.audio_dir.get())
+        print('> video dir:', self.video_dir.get())
         print('> Message dir:', self.message_dir.get())
         print('> Key:', self.key_entry.get())
         print('> Random:', self.random_frame.get())
         print('> Encrypt:', self.output_name.get())
 
-        # file_dir = self.audio_dir.get()
-        # message_dir = self.message_dir.get()
-        # key = self.key_entry.get()
-        # output_filename = self.output_name.get()
+        file_dir = self.video_dir.get()
+        message_dir = self.message_dir.get()
+        key = self.key_entry.get()
+        output_filename = self.output_name.get()
 
-        # if file_dir == '' or message_dir == '' or key == '' or output_filename == '':
-        #     return
+        if file_dir == '' or message_dir == '' or key == '' or output_filename == '':
+            return
+        
+        is_encrypt = self.encrypt.get()
+        is_random_frame = self.random_frame.get()
+        is_random_pixel = self.random_pixel.get()
 
-        # insert = Inserter(file_dir, message_dir, key)
+        try:
+            insert = Inserter(file_dir, message_dir, key)
+            original_frames = insert.ori_frames
+            inserted_frames = insert.insert_message(
+                is_encrypt,
+                is_random_frame,
+                is_random_pixel
+            )
+            changes_frame_index = insert.changes_frame_index
+            output_file_dir = f"output/video/{output_filename}.avi"
+            save_images_to_video(
+                output_file_dir,
+                insert.directory_img,
+                inserted_frames,
+                insert.frame_rate
+            )
+            psnr_value = count_psnr_video(
+                original_frames,
+                inserted_frames,
+                changes_frame_index
+            )
 
-        # frame_modified = insert.insert_message(
-        #     randomize=self.random_frame.get(),
-        #     encrypted=self.encrypt.get(),
-        # )
-
-        # output_file = File("output/" + output_filename + ".wav")
-        # output_file.write_audio_file(frame_modified, insert.params)
-
-        print('Insertion Finished!')
+            title = 'Finish Insert Secret Message to Video'
+            self.controller.show_end_frame(
+                title, 
+                'Video', 
+                output_file_dir, 
+                psnr_value
+            )
+        except:
+            print('Error when insert secret message!')

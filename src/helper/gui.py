@@ -1,5 +1,6 @@
 import tkinter as tk
 import simpleaudio as sa
+import cv2
 
 
 def insert_header(container, text):
@@ -87,3 +88,25 @@ def play_audio_file(audio_dir):
 
     except:
         print("Failed to play sound")
+
+def play_video_file(video_dir):
+    try:
+        cap = cv2.VideoCapture(video_dir)
+
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if ret:
+                cv2.imshow(video_dir, frame)
+            else:
+                break
+
+            # Quit playing
+            key = cv2.waitKey(25)
+            if key == 27:  # Button esc
+                break
+
+        cap.release()
+        cv2.destroyAllWindows()
+
+    except:
+        print('Failed to play video')
