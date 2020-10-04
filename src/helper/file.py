@@ -11,8 +11,6 @@ class File:
 
     def write_image_file(self, image):
         cv2.imwrite(self.filename, image)
-        print('---')
-        print(image[0][0][0])
 
     def read_frame_audio_file(self):
         song = wave.open(self.filename, mode='rb')

@@ -1,3 +1,4 @@
+import cv2
 import tkinter as tk
 import tkinter.filedialog as fd
 import src.helper.gui as hg
@@ -143,6 +144,12 @@ class ImageInsertionForm(tk.Frame):
         output_file.write_image_file(image_modified)
 
         print('Insertion Finished!')
+
+        image = cv2.imread(file_dir)
+        cv2.imshow('Original Image', image_modified)
+        cv2.imshow('Steganography Image', image_modified)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
         title = "Finish Insert Secret Message to Image"
         self.controller.show_end_frame(title, "Image", file_name)

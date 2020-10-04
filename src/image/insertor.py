@@ -1,3 +1,5 @@
+from tkinter import messagebox
+
 import random
 import base64
 
@@ -27,7 +29,6 @@ class Inserter:
         sign = 1 if encrypted else 0
 
         self.ndarray[0][0][0] = self.ndarray[0][0][0] & 254 | sign
-        print(self.ndarray[0][0][0])
         if encrypted:
             self.string_message = encrypt_vigenere(self.string_message, key)
 
@@ -35,7 +36,6 @@ class Inserter:
         sign = 1 if randomize_frames else 0
 
         self.ndarray[0][0][1] = self.ndarray[0][0][1] & 254 | sign
-        print(self.ndarray[0][0][1])
         if randomize_frames:
             random.seed(self.seed)
             random.shuffle(self.pixel_list)
@@ -49,6 +49,10 @@ class Inserter:
                 h, w, color = self.get_ndarray_pos(i)
                 self.ndarray[h][w][color] = self.ndarray[h][w][color] & 254 | array_bit[index]
                 index += 1
+        if index < len(array_bit):
+            error = "Ukuran pesan melebihi kapasitas payload!"
+            messagebox.showerror("Kesalahan", error)
+            raise RuntimeError(error)
 
     def get_ndarray_pos(self, idx):
         color = idx % self.color
