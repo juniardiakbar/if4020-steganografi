@@ -68,6 +68,18 @@ def create_check_button(master, text, variable, row, col):
     check_button.grid(row=row, column=col, sticky=tk.W)
 
 
+def create_radio_button(master, text, variable, row, col):
+    radio_button = tk.Radiobutton(
+        master=master,
+        text=text,
+        value=text,
+        variable=variable,
+        bg="white",
+        fg="black"
+    )
+    radio_button.grid(row=row, column=col, sticky=tk.W)
+
+
 def create_entry(master, default, row, col):
 
     entry = tk.Entry(master=master)
@@ -88,6 +100,20 @@ def play_audio_file(audio_dir):
 
     except:
         print("Failed to play sound")
+
+
+def show_image_preview(image_dir):
+    print(image_dir)
+    try:
+        image = cv2.imread(image_dir)
+        window_name = 'Preview Image'
+        cv2.imshow(window_name, image)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+    except:
+        print("Failed to show image preview")
+
 
 def play_video_file(video_dir):
     try:
