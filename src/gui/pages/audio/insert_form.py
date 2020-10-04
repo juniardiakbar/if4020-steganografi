@@ -3,6 +3,7 @@ import tkinter.filedialog as fd
 import src.helper.gui as hg
 
 from src.audio.insertor import Inserter
+from src.audio.psnr import audio_PSNR
 from src.helper.file import File
 
 
@@ -113,7 +114,7 @@ class AudioInsertionForm(tk.Frame):
         print('> Message dir:', self.message_dir.get())
         print('> Key:', self.key_entry.get())
         print('> Random:', self.random.get())
-        print('> Encrypt:', self.output_name.get())
+        print('> Encrypt:', self.encrypt.get())
 
         file_dir = self.audio_dir.get()
         message_dir = self.message_dir.get()
@@ -137,8 +138,11 @@ class AudioInsertionForm(tk.Frame):
 
             print('Insertion Finished!')
 
+            modified_buff = output_file.init_buff_audio_file()
+            psnr = audio_PSNR(insert.init_buff, modified_buff)
             title = "Finish Insert Secret Message to Audio"
-            self.controller.show_end_frame(title, "Audio", file_name)
+            self.controller.show_end_frame(title, "Audio", file_name, psnr)
 
-        except:
+        except Exception as e:
             print("Error occured while insert secret message")
+            print(e)

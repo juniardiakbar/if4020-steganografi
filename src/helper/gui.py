@@ -101,6 +101,7 @@ def play_audio_file(audio_dir):
     except:
         print("Failed to play sound")
 
+
 def show_image_preview(image_dir):
     print(image_dir)
     try:
@@ -112,3 +113,26 @@ def show_image_preview(image_dir):
 
     except:
         print("Failed to show image preview")
+
+
+def play_video_file(video_dir):
+    try:
+        cap = cv2.VideoCapture(video_dir)
+
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if ret:
+                cv2.imshow(video_dir, frame)
+            else:
+                break
+
+            # Quit playing
+            key = cv2.waitKey(25)
+            if key == 27:  # Button esc
+                break
+
+        cap.release()
+        cv2.destroyAllWindows()
+
+    except:
+        print('Failed to play video')

@@ -18,22 +18,15 @@ class Extractor:
     def extract_messages(self):
         encrypted = bin(self.frame[0])[-1] == '1'
         random_frames = bin(self.frame[1])[-1] == '1'
-        opt = 2 if bin(self.frame[2])[-1] == '1' else 1
 
         self.seed = self.count_seed()
+        extracted = [self.frame[i] & 1 for i in range(len(self.frame))]
 
         index = 0
-        temp = ""
+        mod_index = 8
+
         message = ""
-
-        if opt == 1:
-            mod_index = 8
-            extracted = [self.frame[i] & 1 for i in range(len(self.frame))]
-
-        elif opt == 2:
-            mod_index = 4
-            extracted = [bin(self.frame[i] & 3).lstrip('0b').rjust(
-                2, '0') for i in range(len(self.frame))]
+        temp = ""
 
         frame_list = list(range(len(extracted)))
         if random_frames:
@@ -41,7 +34,7 @@ class Extractor:
             random.shuffle(frame_list)
 
         for i in frame_list:
-            if i >= 3:
+            if i >= 2:
                 if index % mod_index != (mod_index - 1):
                     temp += str(extracted[i])
                 else:
@@ -62,11 +55,9 @@ class Extractor:
         self.len_message = int(message_info[0])
         self.extension = message_info[1]
 
-    def write_secret_message(self):
+    def get_secret_message(self):
         init = len(str(self.len_message)) + len(str(self.extension)) + 2
         decoded = self.string_message[init:init + self.len_message]
 
         bytes_file = decoded.encode('utf-8')
-        bytes_file = base64.b64decode(bytes_file)
-
-        return bytes_file
+        return base64.b64decode(bytes_file)
