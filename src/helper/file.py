@@ -12,6 +12,14 @@ class File:
 
         return frame_bytes
 
+    def init_buff_audio_file(self):
+        song = wave.open(self.filename, mode='rb')
+        init_buff = song.readframes(-1)
+        init_buff = [item + 0 for item in init_buff]
+        song.close()
+
+        return init_buff
+
     def write_audio_file(self, frame, params):
         song = wave.open(self.filename, mode='wb')
         song.setparams(params)

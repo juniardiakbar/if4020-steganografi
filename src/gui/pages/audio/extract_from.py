@@ -43,6 +43,9 @@ class AudioExtractForm(tk.Frame):
         hg.create_button(file_frame, 'Choose',
                          lambda: self.load_audio_file(), 1, 0)
 
+        hg.create_button(file_frame, 'Play Sound',
+                         lambda: hg.play_audio_file(self.audio_dir.get()), 1, 1)
+
     def render_key_frame(self):
         key_frame = hg.create_frame(self, self.KEY_ROW + 1)
 
@@ -97,7 +100,8 @@ class AudioExtractForm(tk.Frame):
             print('Extraction Finished!')
 
             title = "Finish Extract Secret Message from Audio"
-            self.controller.show_end_frame(title, "None", file_name)
+            self.controller.show_end_frame(title, "None", file_name, 0)
 
-        except:
+        except Exception as e:
             print("Error occured while extract secret message")
+            print(e)

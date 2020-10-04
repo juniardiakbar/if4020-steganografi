@@ -5,11 +5,14 @@ import base64
 from src.helper.file import File
 from src.helper.cipher import encrypt_vigenere
 
+from tkinter import messagebox
+
 
 class Inserter:
     def __init__(self, file_dir, secret_message_dir, key):
         audio_file = File(file_dir)
         self.frame = audio_file.read_frame_audio_file()
+        self.init_buff = audio_file.init_buff_audio_file()
         self.params = audio_file.get_params_audio()
 
         secret_message = File(secret_message_dir)
@@ -47,6 +50,11 @@ class Inserter:
             if i >= 2:
                 self.frame[i] = self.frame[i] & 254 | array_bit[index]
                 index += 1
+
+        if index < len(array_bit):
+            error = "Ukuran pesan melebihi kapasitas payload!"
+            messagebox.showerror("Kesalahan", error)
+            raise RuntimeError(error)
 
     def insert_message(self, encrypted=False, randomize=False):
         self.seed = self.count_seed()
