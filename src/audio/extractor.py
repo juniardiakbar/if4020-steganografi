@@ -34,7 +34,7 @@ class Extractor:
             random.shuffle(frame_list)
 
         for i in frame_list:
-            if i >= 3:
+            if i >= 2:
                 if index % mod_index != (mod_index - 1):
                     temp += str(extracted[i])
                 else:
