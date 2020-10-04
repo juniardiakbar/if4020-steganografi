@@ -138,9 +138,11 @@ class AudioInsertionForm(tk.Frame):
 
             print('Insertion Finished!')
 
-            psnr = audio_PSNR(frame_modified, insert.frame_list)
+            modified_buff = output_file.init_buff_audio_file()
+            psnr = audio_PSNR(insert.init_buff, modified_buff)
             title = "Finish Insert Secret Message to Audio"
             self.controller.show_end_frame(title, "Audio", file_name, psnr)
 
-        except:
+        except Exception as e:
             print("Error occured while insert secret message")
+            print(e)

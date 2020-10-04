@@ -12,6 +12,7 @@ class Inserter:
     def __init__(self, file_dir, secret_message_dir, key):
         audio_file = File(file_dir)
         self.frame = audio_file.read_frame_audio_file()
+        self.init_buff = audio_file.init_buff_audio_file()
         self.params = audio_file.get_params_audio()
 
         secret_message = File(secret_message_dir)
