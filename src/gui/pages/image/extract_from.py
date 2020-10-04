@@ -106,4 +106,4 @@ class ImageExtractForm(tk.Frame):
         print('Extraction Finished!')
 
         title = "Finish Extract Secret Message from Image"
-        self.controller.show_end_frame(title, "None", file_name)
+        self.controller.show_end_frame(title, "None", file_name, 0)

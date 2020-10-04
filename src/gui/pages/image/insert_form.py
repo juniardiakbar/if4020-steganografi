@@ -4,6 +4,7 @@ import tkinter.filedialog as fd
 import src.helper.gui as hg
 
 from src.image.insertor import Inserter
+from src.image.psnr import image_PSNR
 from src.helper.file import File
 
 
@@ -182,4 +183,6 @@ class ImageInsertionForm(tk.Frame):
         cv2.destroyAllWindows()
 
         title = "Finish Insert Secret Message to Image"
-        self.controller.show_end_frame(title, "Image", file_name)
+
+        psnr = image_PSNR(image, image_modified)
+        self.controller.show_end_frame(title, "Image", file_name, psnr)
