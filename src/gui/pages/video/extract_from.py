@@ -54,7 +54,7 @@ class VideoExtractForm(tk.Frame):
         output_frame = hg.create_frame(self, self.OUTPUT_ROW + 1)
 
         hg.create_label(output_frame, 'Output file\'s name:', 0, 0)
-        hg.create_label(output_frame, '.txt', 1, 1)
+        hg.create_label(output_frame, '', 1, 1)
         self.output_name = hg.create_entry(
             output_frame, self.DEFAULT_OUT_FILENAME, 1, 0)
 
@@ -90,10 +90,12 @@ class VideoExtractForm(tk.Frame):
             extract.extract_message()
             extract.parse_message()
 
-            output_file = File("output/text/" + output_filename + ".txt")
+            file_name = f"output/text/{output_filename}.{extract.extension}"
+            output_file = File(file_name)
             byte = extract.write_secret_message()
             output_file.write_files(byte)
-
-            print('Extraction Finished!')
+            
+            title = 'Finish Extract Secret Message from Video'
+            self.controller.show_end_frame(title, 'None', file_name)
         except:
-            print('Error when extract video!')
+            print('Error occured while extract secret message!')

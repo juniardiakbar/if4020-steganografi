@@ -142,6 +142,8 @@ class VideoInsertionForm(tk.Frame):
                 inserted_frames,
                 insert.frame_rate
             )
-            print('Insertion Finished!')
+
+            title = 'Finish Insert Secret Message to Video'
+            self.controller.show_end_frame(title, 'None', output_file_dir)
         except:
             print('Error when insert secret message!')
