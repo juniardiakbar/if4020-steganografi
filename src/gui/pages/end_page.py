@@ -30,7 +30,21 @@ class EndPage(tk.Frame):
             back_frame = hg.create_frame(self, 4)
             hg.create_button(back_frame, 'Back',
                              lambda: self.controller.show_frame("StartPage"), 0, 1)
+        
+        elif (stegano_type == "Video"):
+            output_frame = hg.create_frame(self, 2)
+            hg.create_label(output_frame, 'Output Video:', 0, 0)
+            hg.create_label(output_frame, file_dir, 0, 1)
+            
+            pos_back = 3
+            if (psnr is not None):
+                psnr_frame = hg.create_frame(self, 3)
+                hg.create_label(psnr_frame, 'PSNR = ' + str(psnr), 0, 0)
+                pos_back += 1
 
+            back_frame = hg.create_frame(self, pos_back)
+            hg.create_button(back_frame, 'Back',
+                             lambda: self.controller.show_frame("StartPage"), 0, 1)
         else:
             back_frame = hg.create_frame(self, 2)
             hg.create_button(back_frame, 'Back',

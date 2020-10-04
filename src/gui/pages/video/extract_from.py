@@ -96,6 +96,6 @@ class VideoExtractForm(tk.Frame):
             output_file.write_files(byte)
             
             title = 'Finish Extract Secret Message from Video'
-            self.controller.show_end_frame(title, 'None', file_name)
+            self.controller.show_end_frame(title, 'Video', file_name, None)
         except:
             print('Error occured while extract secret message!')

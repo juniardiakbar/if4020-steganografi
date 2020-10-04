@@ -151,6 +151,11 @@ class VideoInsertionForm(tk.Frame):
             )
 
             title = 'Finish Insert Secret Message to Video'
-            self.controller.show_end_frame(title, 'None', output_file_dir)
+            self.controller.show_end_frame(
+                title, 
+                'Video', 
+                output_file_dir, 
+                psnr_value
+            )
         except:
             print('Error when insert secret message!')
