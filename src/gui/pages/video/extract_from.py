@@ -2,8 +2,9 @@ import tkinter as tk
 import tkinter.filedialog as fd
 import src.helper.gui as hg
 
-# from src.video.extractor import Extractor
-# from src.helper.file import File
+from src.video.extractor import Extractor
+from src.helper.video_file import *
+from src.helper.file import File
 
 
 class VideoExtractForm(tk.Frame):
@@ -53,7 +54,7 @@ class VideoExtractForm(tk.Frame):
         output_frame = hg.create_frame(self, self.OUTPUT_ROW + 1)
 
         hg.create_label(output_frame, 'Output file\'s name:', 0, 0)
-        hg.create_label(output_frame, '.wav', 1, 1)
+        hg.create_label(output_frame, '.txt', 1, 1)
         self.output_name = hg.create_entry(
             output_frame, self.DEFAULT_OUT_FILENAME, 1, 0)
 
@@ -68,7 +69,7 @@ class VideoExtractForm(tk.Frame):
 
     def load_video_file(self):
         dialog = fd.askopenfilename(
-            filetypes=((".WAV video", "*.wav"),)
+            filetypes=((".AVI video", "*.avi"),)
         )
         self.video_dir.set(dialog)
 
@@ -77,19 +78,19 @@ class VideoExtractForm(tk.Frame):
         print('> video dir:', self.video_dir.get())
         print('> Key:', self.key_entry.get())
 
-        # file_dir = self.video_dir.get()
-        # key = self.key_entry.get()
-        # output_filename = self.output_name.get()
+        file_dir = self.video_dir.get()
+        key = self.key_entry.get()
+        output_filename = self.output_name.get()
 
-        # if file_dir == '' or key == '' or output_filename == '':
-        #     return
+        if file_dir == '' or key == '' or output_filename == '':
+            return
 
-        # extract = Extractor(file_dir, key)
-        # extract.extract_messages()
-        # extract.parse_message()
+        extract = Extractor(file_dir, key)
+        extract.extract_message()
+        extract.parse_message()
 
-        # output_file = File("output/" + output_filename + ".txt")
-        # byte = extract.get_secret_message()
-        # output_file.write_files(byte)
+        output_file = File("output/text/" + output_filename + ".txt")
+        byte = extract.write_secret_message()
+        output_file.write_files(byte)
 
         print('Extraction Finished!')

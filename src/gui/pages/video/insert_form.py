@@ -121,7 +121,6 @@ class VideoInsertionForm(tk.Frame):
         key = self.key_entry.get()
         output_filename = self.output_name.get()
 
-        # Below code should be Error Handling
         if file_dir == '' or message_dir == '' or key == '' or output_filename == '':
             return
         
