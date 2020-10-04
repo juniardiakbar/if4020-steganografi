@@ -130,17 +130,24 @@ class VideoInsertionForm(tk.Frame):
 
         try:
             insert = Inserter(file_dir, message_dir, key)
+            original_frames = insert.ori_frames
             inserted_frames = insert.insert_message(
                 is_encrypt,
                 is_random_frame,
                 is_random_pixel
             )
+            changes_frame_index = insert.changes_frame_index
             output_file_dir = f"output/video/{output_filename}.avi"
             save_images_to_video(
                 output_file_dir,
                 insert.directory_img,
                 inserted_frames,
                 insert.frame_rate
+            )
+            psnr_value = count_psnr_video(
+                original_frames,
+                inserted_frames,
+                changes_frame_index
             )
 
             title = 'Finish Insert Secret Message to Video'

@@ -10,6 +10,8 @@ class Inserter:
     def __init__(self, file_dir, message_dir, key):
         # Extract video
         video_file = VideoFile(file_dir)
+        self.ori_frames = copy.deepcopy(video_file.frames)
+        self.changes_frame_index = []
         self.frames = copy.deepcopy(video_file.frames)
         self.frame_rate = video_file.frame_rate
         self.resolution = video_file.resolution
@@ -62,7 +64,6 @@ class Inserter:
                 awal = self.frames[idx_frame][idx_height][idx_width][i]
                 
                 self.frames[idx_frame][idx_height][idx_width][i] = awal & 254 | bit
-                akhir = self.frames[idx_frame][idx_height][idx_width][i]
                 i += 1
             else:
                 break
@@ -89,8 +90,10 @@ class Inserter:
                         )
                 if (idx_bit >= array_bit_length):
                     break
+            self.changes_frame_index += [idx_frame]
             if (idx_bit >= array_bit_length):
                 break
+            
         if (idx_bit < array_bit_length):
             error = 'Ukuran pesan melebihi kapasitas payload!'
             messagebox.showerror("Kesalahan", error)
