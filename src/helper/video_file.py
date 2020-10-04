@@ -44,7 +44,7 @@ class VideoFile:
         tmp = string[2:string.find('\\')]
         width, height = tmp.split('x')
 
-        return (width, height)
+        return (int(width), int(height))
     
     def read_frames(self):
         input_video, _ = (
@@ -64,28 +64,52 @@ class VideoFile:
 
         return frames
     
-    def save_frames_to_image(self):
-        os.makedirs(self.directory_img)
-        count = 0
-        for frame in self.frames:
-            image = Image.fromarray(frame)
-            image.save(self.directory_img + '/frame%d.png' % count)
-            count += 1
+    # def save_frames_to_image(self):
+    #     os.makedirs(self.directory_img)
+    #     count = 0
+    #     for frame in self.frames:
+    #         image = Image.fromarray(frame)
+    #         image.save(self.directory_img + '/frame%d.png' % count)
+    #         count += 1
     
-    def save_images_to_video(self, output_path):
-        self.save_frames_to_image()
+    # def save_images_to_video(self, output_path):
+    #     self.save_frames_to_image()
 
-        command = [ 
-            'ffmpeg',
-            '-r', str(self.frame_rate),
-            '-i', self.directory_img + '/frame%d.png',
-            '-vcodec', 'ffv1',
-            '-y',
-            output_path 
-        ]
-        retcode = subprocess.call(command)
+    #     command = [ 
+    #         'ffmpeg',
+    #         '-r', str(self.frame_rate),
+    #         '-i', self.directory_img + '/frame%d.png',
+    #         '-vcodec', 'ffv1',
+    #         '-y',
+    #         output_path 
+    #     ]
+    #     retcode = subprocess.call(command)
 
-        shutil.rmtree('../tmp/')
+    #     shutil.rmtree('../tmp/')
+
+
+def save_frames_to_image(directory_img, frames):
+    os.makedirs(directory_img)
+    count = 0
+    for frame in frames:
+        image = Image.fromarray(frame)
+        image.save(directory_img + '/frame%d.png' % count)
+        count += 1
+
+def save_images_to_video(output_path, directory_img, frames, frame_rate):
+    save_frames_to_image(directory_img, frames)
+
+    command = [ 
+        'ffmpeg',
+        '-r', str(frame_rate),
+        '-i', directory_img + '/frame%d.png',
+        '-vcodec', 'ffv1',
+        '-y',
+        output_path 
+    ]
+    retcode = subprocess.call(command)
+
+    shutil.rmtree('../tmp/')
 
 # if (__name__=="__main__"):
 #     path = '../../sample/video/ex1.avi'
