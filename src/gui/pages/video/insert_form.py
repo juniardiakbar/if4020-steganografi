@@ -2,10 +2,8 @@ import tkinter as tk
 import tkinter.filedialog as fd
 import src.helper.gui as hg
 
-# from src.audio.insertor import Inserter
-# from src.helper.file import File
 from src.video.insertor import Inserter
-from src.helper.file import File
+from src.helper.video_file import *
 
 
 class VideoInsertionForm(tk.Frame):
@@ -118,22 +116,32 @@ class VideoInsertionForm(tk.Frame):
         print('> Random:', self.random_frame.get())
         print('> Encrypt:', self.output_name.get())
 
-        # file_dir = self.video_dir.get()
-        # message_dir = self.message_dir.get()
-        # key = self.key_entry.get()
-        # output_filename = self.output_name.get()
+        file_dir = self.video_dir.get()
+        message_dir = self.message_dir.get()
+        key = self.key_entry.get()
+        output_filename = self.output_name.get()
 
-        # if file_dir == '' or message_dir == '' or key == '' or output_filename == '':
-        #     return
+        # Below code should be Error Handling
+        if file_dir == '' or message_dir == '' or key == '' or output_filename == '':
+            return
+        
+        is_encrypt = self.encrypt.get()
+        is_random_frame = self.random_frame.get()
+        is_random_pixel = self.random_pixel.get()
 
-        # insert = Inserter(file_dir, message_dir, key)
+        insert = Inserter(file_dir, message_dir, key)
+        inserted_frames = insert.insert_message(
+            is_encrypt,
+            is_random_frame,
+            is_random_pixel
+        )
 
-        # frame_modified = insert.insert_message(
-        #     randomize=self.random_frame.get(),
-        #     encrypted=self.encrypt.get(),
-        # )
-
-        # output_file = File("output/" + output_filename + ".wav")
-        # output_file.write_video_file(frame_modified, insert.params)
+        output_file_dir = f"output/video/{output_filename}.avi"
+        save_images_to_video(
+            output_file_dir,
+            insert.directory_img,
+            inserted_frames,
+            insert.frame_rate
+        )
 
         print('Insertion Finished!')
