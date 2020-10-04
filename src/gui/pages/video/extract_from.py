@@ -84,13 +84,16 @@ class VideoExtractForm(tk.Frame):
 
         if file_dir == '' or key == '' or output_filename == '':
             return
+        
+        try:
+            extract = Extractor(file_dir, key)
+            extract.extract_message()
+            extract.parse_message()
 
-        extract = Extractor(file_dir, key)
-        extract.extract_message()
-        extract.parse_message()
+            output_file = File("output/text/" + output_filename + ".txt")
+            byte = extract.write_secret_message()
+            output_file.write_files(byte)
 
-        output_file = File("output/text/" + output_filename + ".txt")
-        byte = extract.write_secret_message()
-        output_file.write_files(byte)
-
-        print('Extraction Finished!')
+            print('Extraction Finished!')
+        except:
+            print('Error when extract video!')

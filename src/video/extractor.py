@@ -22,6 +22,9 @@ class Extractor:
     def count_seed(self):
         return sum([ord(i) for i in self.key])
     
+    def is_stop(self, message):
+        return message.count('#') == 2
+
     def extract_message(self):
         self.seed = self.count_seed()
 
@@ -68,9 +71,13 @@ class Extractor:
                                     cnt_message += 1
                                     if (cnt_message == len_message):
                                         break
+                                decrypted_message = message
                                 if (is_encrypt):
-                                    char = decrypt_vigenere(char, self.key)
-                                if (char == '#'):
+                                    decrypted_message = decrypt_vigenere(
+                                        decrypted_message, 
+                                        self.key
+                                    )
+                                if (self.is_stop(decrypted_message)):
                                     cnt_border += 1
                                 if (cnt_border == 2):
                                     tmp_message = message
