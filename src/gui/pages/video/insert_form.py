@@ -128,19 +128,20 @@ class VideoInsertionForm(tk.Frame):
         is_random_frame = self.random_frame.get()
         is_random_pixel = self.random_pixel.get()
 
-        insert = Inserter(file_dir, message_dir, key)
-        inserted_frames = insert.insert_message(
-            is_encrypt,
-            is_random_frame,
-            is_random_pixel
-        )
-
-        output_file_dir = f"output/video/{output_filename}.avi"
-        save_images_to_video(
-            output_file_dir,
-            insert.directory_img,
-            inserted_frames,
-            insert.frame_rate
-        )
-
-        print('Insertion Finished!')
+        try:
+            insert = Inserter(file_dir, message_dir, key)
+            inserted_frames = insert.insert_message(
+                is_encrypt,
+                is_random_frame,
+                is_random_pixel
+            )
+            output_file_dir = f"output/video/{output_filename}.avi"
+            save_images_to_video(
+                output_file_dir,
+                insert.directory_img,
+                inserted_frames,
+                insert.frame_rate
+            )
+            print('Insertion Finished!')
+        except:
+            print('Error when insert secret message!')

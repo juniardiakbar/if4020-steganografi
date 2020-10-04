@@ -4,6 +4,7 @@ import numpy as np
 from src.helper.file import File
 from src.helper.video_file import *
 from src.helper.cipher import encrypt_vigenere
+from tkinter import messagebox
 
 class Inserter:
     def __init__(self, file_dir, message_dir, key):
@@ -90,6 +91,11 @@ class Inserter:
                     break
             if (idx_bit >= array_bit_length):
                 break
+        if (idx_bit < array_bit_length):
+            error = 'Ukuran pesan melebihi kapasitas payload!'
+            messagebox.showerror("Kesalahan", error)
+            raise RuntimeError(error)
+
         return self.frames
 
     def insert_message(self, is_encrypt = False, is_random_frame = False, is_random_pixel = False):
