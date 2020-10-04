@@ -18,6 +18,8 @@ class ImageInsertionForm(tk.Frame):
 
         self.render_file_frame()
         self.render_message_frame()
+        self.render_method_frame()
+        self.render_alpha_frame()
         self.render_key_frame()
         self.render_options_frame()
         self.render_output_frame()
@@ -27,12 +29,15 @@ class ImageInsertionForm(tk.Frame):
         self.TITLE_ROW = 0
         self.FILE_ROW = 1
         self.MESSAGE_ROW = 2
-        self.KEY_ROW = 3
-        self.OPTIONS_ROW = 4
-        self.OUTPUT_ROW = 5
-        self.EXECUTE_ROW = 6
+        self.METHOD_ROW = 3
+        self.ALPHA_ROW = 4
+        self.KEY_ROW = 5
+        self.OPTIONS_ROW = 6
+        self.OUTPUT_ROW = 7
+        self.EXECUTE_ROW = 8
 
         self.DEFAULT_OUT_FILENAME = 'insert_result'
+        self.DEFAULT_ALPHA = '0.3'
 
         self.encrypt = tk.IntVar()
         self.encrypt.set(0)
@@ -41,6 +46,9 @@ class ImageInsertionForm(tk.Frame):
 
         self.output_ext = tk.StringVar()
         self.output_ext.set('bmp')
+
+        self.method = tk.StringVar()
+        self.method.set('lsb')
 
         self.image_dir = tk.StringVar()
         self.image_dir.set('')
@@ -61,6 +69,22 @@ class ImageInsertionForm(tk.Frame):
 
         hg.create_button(file_frame, 'Preview Image',
                          lambda: hg.show_image_preview(self.image_dir.get()), 1, 1)
+
+    def render_method_frame(self):
+        method_frame = hg.create_frame(self, self.METHOD_ROW + 1)
+
+        hg.create_label(method_frame, 'Steganography method:', 0, 0)
+        hg.create_radio_button(
+            method_frame, 'lsb', self.method, 1, 0)
+        hg.create_radio_button(
+            method_frame, 'bpcs', self.method, 1, 1)
+
+    def render_alpha_frame(self):
+        alpha_frame = hg.create_frame(self, self.ALPHA_ROW + 1)
+
+        hg.create_label(alpha_frame, 'Alpha (for BPCS only):', 2, 0)
+        self.alpha = hg.create_entry(
+            alpha_frame, self.DEFAULT_ALPHA, 3, 0)
 
     def render_message_frame(self):
         msg_frame = hg.create_frame(self, self.MESSAGE_ROW + 1)
@@ -117,6 +141,8 @@ class ImageInsertionForm(tk.Frame):
     def execute(self):
         print('Insertion Started!')
         print('> Image dir:', self.image_dir.get())
+        print('> Method:', self.method.get())
+        print('> Alpha (for BPCS only):', self.alpha.get())
         print('> Message dir:', self.message_dir.get())
         print('> Key:', self.key_entry.get())
         print('> Random:', self.random.get())
@@ -124,6 +150,8 @@ class ImageInsertionForm(tk.Frame):
         print('> Output ext:', self.output_ext.get())
 
         file_dir = self.image_dir.get()
+        method = self.method.get()
+        alpha = float(self.alpha.get())
         message_dir = self.message_dir.get()
         key = self.key_entry.get()
         output_filename = self.output_name.get()
@@ -137,6 +165,8 @@ class ImageInsertionForm(tk.Frame):
         image_modified = insert.insert_message(
             randomize=self.random.get(),
             encrypted=self.encrypt.get(),
+            method=method,
+            alpha=alpha
         )
 
         file_name = "output/" + output_filename + "." + output_fileext
@@ -146,7 +176,7 @@ class ImageInsertionForm(tk.Frame):
         print('Insertion Finished!')
 
         image = cv2.imread(file_dir)
-        cv2.imshow('Original Image', image_modified)
+        cv2.imshow('Original Image', image)
         cv2.imshow('Steganography Image', image_modified)
         cv2.waitKey(0)
         cv2.destroyAllWindows()

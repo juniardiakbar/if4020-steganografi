@@ -16,6 +16,7 @@ class ImageExtractForm(tk.Frame):
         hg.insert_header(self, 'Steganografi Extract Image')
 
         self.render_file_frame()
+        self.render_alpha_frame()
         self.render_key_frame()
         self.render_output_frame()
         self.render_execute_frame()
@@ -23,11 +24,13 @@ class ImageExtractForm(tk.Frame):
     def initialize(self):
         self.TITLE_ROW = 0
         self.FILE_ROW = 1
-        self.KEY_ROW = 2
-        self.OUTPUT_ROW = 3
-        self.EXECUTE_ROW = 4
+        self.ALPHA_ROW = 2
+        self.KEY_ROW = 3
+        self.OUTPUT_ROW = 4
+        self.EXECUTE_ROW = 5
 
         self.DEFAULT_OUT_FILENAME = 'extract_result'
+        self.DEFAULT_ALPHA = '0.3'
 
         self.image_dir = tk.StringVar()
         self.image_dir.set('')
@@ -48,6 +51,13 @@ class ImageExtractForm(tk.Frame):
 
         hg.create_label(key_frame, 'Stegano Key:', 0, 0)
         self.key_entry = hg.create_entry(key_frame, "", 1, 0)
+
+    def render_alpha_frame(self):
+        alpha_frame = hg.create_frame(self, self.ALPHA_ROW + 1)
+
+        hg.create_label(alpha_frame, 'Alpha (for BPCS only):', 2, 0)
+        self.alpha = hg.create_entry(
+            alpha_frame, self.DEFAULT_ALPHA, 3, 0)
 
     def render_output_frame(self):
         output_frame = hg.create_frame(self, self.OUTPUT_ROW + 1)
@@ -78,13 +88,14 @@ class ImageExtractForm(tk.Frame):
 
         file_dir = self.image_dir.get()
         key = self.key_entry.get()
+        alpha = float(self.alpha.get())
         output_filename = self.output_name.get()
 
         if file_dir == '' or key == '' or output_filename == '':
             return
 
         extract = Extractor(file_dir, key)
-        extract.extract_messages()
+        extract.extract_messages(alpha=alpha)
         extract.parse_message()
 
         file_name = "output/" + output_filename + "." + extract.extension
