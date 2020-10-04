@@ -113,7 +113,7 @@ class AudioInsertionForm(tk.Frame):
         print('> Message dir:', self.message_dir.get())
         print('> Key:', self.key_entry.get())
         print('> Random:', self.random.get())
-        print('> Encrypt:', self.output_name.get())
+        print('> Encrypt:', self.encrypt.get())
 
         file_dir = self.audio_dir.get()
         message_dir = self.message_dir.get()
