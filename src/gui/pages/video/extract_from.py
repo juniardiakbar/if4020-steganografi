@@ -43,6 +43,8 @@ class VideoExtractForm(tk.Frame):
         hg.create_label(file_frame, self.video_dir, 0, 1, fix_text=False)
         hg.create_button(file_frame, 'Choose',
                          lambda: self.load_video_file(), 1, 0)
+        hg.create_button(file_frame, 'Play Video',
+                         lambda: hg.play_video_file(self.video_dir.get()), 1, 1)
 
     def render_key_frame(self):
         key_frame = hg.create_frame(self, self.KEY_ROW + 1)
