@@ -5,6 +5,8 @@ import base64
 from src.helper.file import File
 from src.helper.cipher import encrypt_vigenere
 
+from tkinter import messagebox
+
 
 class Inserter:
     def __init__(self, file_dir, secret_message_dir, key):
@@ -47,6 +49,11 @@ class Inserter:
             if i >= 2:
                 self.frame[i] = self.frame[i] & 254 | array_bit[index]
                 index += 1
+
+        if index < len(array_bit):
+            error = "Ukuran pesan melebihi kapasitas payload!"
+            messagebox.showerror("Kesalahan", error)
+            raise RuntimeError(error)
 
     def insert_message(self, encrypted=False, randomize=False):
         self.seed = self.count_seed()
