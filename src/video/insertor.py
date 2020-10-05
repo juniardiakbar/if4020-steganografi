@@ -17,6 +17,9 @@ class Inserter:
         self.resolution = video_file.resolution
         self.number_of_frames = len(self.frames)
         self.directory_img = video_file.directory_img
+        self.directory_audio = video_file.directory_audio
+        self.directory_video = video_file.directory_video
+        self.is_have_audio = video_file.is_have_audio
 
         self.key = key
 
