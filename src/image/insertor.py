@@ -60,6 +60,15 @@ class Inserter:
             messagebox.showerror("Kesalahan", error)
             raise RuntimeError(error)
 
+    def insert_alpha(self):
+        alpha_str = str(self.alpha)[:7].ljust(7, '0')
+        alpha_bits = list(map(int, ''.join([bin(ord(i)).lstrip('0b').rjust(8, '0') for i in alpha_str])))
+        index = 0
+        for i in range(1, 8):
+            for j in range(8):
+                self.ndarray[i][j][0] = self.ndarray[i][j][0] & 254 | alpha_bits[index]
+                index += 1
+
     def pbc_to_cgc(self):
         b = self.ndarray
         g = b >> 7
@@ -110,7 +119,7 @@ class Inserter:
                         current_bit = np.zeros((8, 8), dtype=int)
                         for i in range(8):
                             for j in range(8):
-                                if i > 0 and j > 0 and index < len(array_bit):
+                                if (i > 0 or j > 0) and index < len(array_bit):
                                     current_bit[i, j] = array_bit[index]
                                     index += 1
 
@@ -120,7 +129,7 @@ class Inserter:
 
                         left = (self.ndarray[h:h+8, w:w+8, color] >> (8 - bitplane)) << (8 - bitplane)
                         right = self.ndarray[h:h+8, w:w+8, color] & ((1 << (8 - bitplane - 1)) - 1)
-                        self.ndarray[h:h+8, w:w+8, color] = left + current_bit + right
+                        self.ndarray[h:h+8, w:w+8, color] = left + (current_bit << 7 - bitplane) + right
             if index >= len(array_bit):
                 break
         if index < len(array_bit):
@@ -161,6 +170,7 @@ class Inserter:
             self.pbc_to_cgc()
             self.modify_block(array_bit)
             self.cgc_to_pbc()
+            self.insert_alpha()
             self.ndarray[0, 0, 2] = self.ndarray[0, 0, 2] & 254 | 1
 
         return self.ndarray
