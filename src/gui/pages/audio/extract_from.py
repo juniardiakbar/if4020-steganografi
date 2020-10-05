@@ -56,7 +56,6 @@ class AudioExtractForm(tk.Frame):
         output_frame = hg.create_frame(self, self.OUTPUT_ROW + 1)
 
         hg.create_label(output_frame, 'Output file\'s name:', 0, 0)
-        hg.create_label(output_frame, '.wav', 1, 1)
         self.output_name = hg.create_entry(
             output_frame, self.DEFAULT_OUT_FILENAME, 1, 0)
 

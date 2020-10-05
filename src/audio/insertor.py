@@ -51,11 +51,6 @@ class Inserter:
                 self.frame[i] = self.frame[i] & 254 | array_bit[index]
                 index += 1
 
-        if index < len(array_bit):
-            error = "Ukuran pesan melebihi kapasitas payload!"
-            messagebox.showerror("Kesalahan", error)
-            raise RuntimeError(error)
-
     def insert_message(self, encrypted=False, randomize=False):
         self.seed = self.count_seed()
 
@@ -63,6 +58,13 @@ class Inserter:
 
         self.string_message = len_message + '#' + self.extension + '#' + self.message
         self.encrypt_message(encrypted, self.key)
+
+        print(len(self.frame), " ", len(self.string_message))
+
+        if 0.9 * len(self.frame) // 8 < len(self.string_message):
+            error = "Ukuran pesan melebihi kapasitas payload!"
+            messagebox.showerror("Kesalahan", error)
+            raise RuntimeError(error)
 
         bits = map(int, ''.join(
             [bin(ord(i)).lstrip('0b').rjust(8, '0') for i in self.string_message]))
