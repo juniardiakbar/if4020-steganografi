@@ -33,6 +33,7 @@ class EndPage(tk.Frame):
         
         elif (stegano_type == "Video"):
             output_frame = hg.create_frame(self, 2)
+            label = 'Output Video:' if psnr is not None else 'Output Message:'
             hg.create_label(output_frame, 'Output Video:', 0, 0)
             hg.create_label(output_frame, file_dir, 0, 1)
             

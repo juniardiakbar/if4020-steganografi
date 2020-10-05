@@ -4,14 +4,16 @@ import subprocess, uuid, os, shutil
 from PIL import Image
 from math import log10, sqrt
 
-
 class VideoFile:
     def __init__(self, filename):
         self.filename = filename
-        self.directory_img = '../tmp/' + str(uuid.uuid4())
+        self.directory_img = 'sample/tmp/' + str(uuid.uuid4())
+        self.directory_audio = 'sample/helper_video/audio/audio.aac'
+        self.directory_video = 'sample/helper_video/video/video.avi'
         self.frame_rate = self.get_frame_rate()
         self.resolution = self.get_resolution()
         self.frames = self.read_frames()
+        self.extract_audio()
     
     def get_frame_rate(self):
         command = [ 
@@ -64,6 +66,29 @@ class VideoFile:
         )
 
         return frames
+
+    def extract_audio(self):
+        command = [ 
+            'ffprobe',
+            '-i', self.filename,
+            '-show_streams',
+            '-select_streams', 'a',
+            '-loglevel', 'error'
+        ]
+        cmd_out, cmd_error = subprocess.Popen(command, stdout=subprocess.PIPE).communicate()
+        if len(cmd_out) == 0:
+            self.is_have_audio = False
+        else:
+            self.is_have_audio = True
+        
+        if (self.is_have_audio):
+            command = [ 
+                'ffmpeg',
+                '-i', self.filename,
+                '-y',
+                self.directory_audio 
+            ]
+            retcode = subprocess.call(command)
     
 def save_frames_to_image(directory_img, frames):
     os.makedirs(directory_img)
@@ -73,8 +98,21 @@ def save_frames_to_image(directory_img, frames):
         image.save(directory_img + '/frame%d.png' % count)
         count += 1
 
-def save_images_to_video(output_path, directory_img, frames, frame_rate):
+def save_images_to_video(
+    output_path, 
+    directory_img, 
+    frames, 
+    frame_rate, 
+    is_have_audio, 
+    audio_path,
+    tmp_video_path
+):
     save_frames_to_image(directory_img, frames)
+
+    if (is_have_audio):
+        path = tmp_video_path
+    else:
+        path = output_path
 
     command = [ 
         'ffmpeg',
@@ -82,11 +120,25 @@ def save_images_to_video(output_path, directory_img, frames, frame_rate):
         '-i', directory_img + '/frame%d.png',
         '-vcodec', 'ffv1',
         '-y',
-        output_path 
+        path
     ]
     retcode = subprocess.call(command)
 
-    shutil.rmtree('../tmp/')
+    shutil.rmtree('sample/tmp/')
+
+    if (is_have_audio):
+        command_audio = [ 
+            'ffmpeg',
+            '-i', tmp_video_path,
+            '-i', audio_path,
+            '-y',
+            '-vcodec', 'copy',
+            '-acodec', 'copy',
+            output_path 
+        ]
+        retcode_2 = subprocess.call(command_audio)
+        os.remove(tmp_video_path)
+        os.remove(audio_path)
 
 def psnr_frame(ori_frame, modified_frame):
     mse = np.mean((ori_frame - modified_frame) ** 2)

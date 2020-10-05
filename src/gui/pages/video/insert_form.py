@@ -144,7 +144,10 @@ class VideoInsertionForm(tk.Frame):
                 output_file_dir,
                 insert.directory_img,
                 inserted_frames,
-                insert.frame_rate
+                insert.frame_rate,
+                insert.is_have_audio,
+                insert.directory_audio,
+                insert.directory_video
             )
             psnr_value = count_psnr_video(
                 original_frames,
