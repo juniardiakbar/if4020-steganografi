@@ -41,7 +41,7 @@ class Inserter:
         self.ndarray[0][0][1] = self.ndarray[0][0][1] & 254 | sign
         if randomize_frames:
             random.seed(self.seed)
-            if self.method == 'psb':
+            if self.method == 'lsb':
                 random.shuffle(self.pixel_list)
             elif self.method == 'bpcs':
                 random.shuffle(self.block_list)
