@@ -59,8 +59,7 @@ class Inserter:
     def insert_message(self, encrypted=False, randomize=False):
         self.seed = self.count_seed()
 
-        len_message = len(self.message) + len(self.extension) + 2
-        len_message = str(len_message + len(str(len_message)))
+        len_message = str(len(self.message) + len(self.extension) + 2)
 
         self.string_message = len_message + '#' + self.extension + '#' + self.message
         self.encrypt_message(encrypted, self.key)
