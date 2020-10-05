@@ -122,6 +122,7 @@ def play_video_file(video_dir):
         while cap.isOpened():
             ret, frame = cap.read()
             if ret:
+                frame = cv2.resize(frame, (640, 480))
                 cv2.imshow(video_dir, frame)
             else:
                 break
