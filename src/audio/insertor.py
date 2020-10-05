@@ -55,11 +55,8 @@ class Inserter:
         self.seed = self.count_seed()
 
         len_message = str(len(self.message) + len(self.extension) + 2)
-
         self.string_message = len_message + '#' + self.extension + '#' + self.message
         self.encrypt_message(encrypted, self.key)
-
-        print(len(self.frame), " ", len(self.string_message))
 
         if 0.9 * len(self.frame) // 8 < len(self.string_message):
             error = "Ukuran pesan melebihi kapasitas payload!"
