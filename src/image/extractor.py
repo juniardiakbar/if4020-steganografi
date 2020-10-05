@@ -62,9 +62,27 @@ class Extractor:
         h = idx // (self.color * self.w)
         return h, w, color
 
-    def extract_messages(self, alpha):
+    def extract_alpha(self):
+        index = 0
+        mod_index = 8
+        temp = ""
+        alpha_str = ""
+
+        for i in range(1, 8):
+            for j in range(8):
+                extracted = self.ndarray[i][j][0] & 1
+                if index % mod_index != (mod_index - 1):
+                    temp += str(extracted)
+                else:
+                    temp += str(extracted)
+                    alpha_str += chr(int(temp, 2))
+                    temp = ""
+                index += 1
+        return float(alpha_str)
+
+    def extract_messages(self):
         self.seed = self.count_seed()
-        
+
         extracted = [self.ndarray[self.get_ndarray_pos(i)] & 1 for i in range(self.h * self.w * self.color)]
         encrypted = extracted[0]
         random_pixels = extracted[1]
@@ -92,6 +110,7 @@ class Extractor:
                         temp = ""
                     index += 1
         elif method == 'bpcs':
+            alpha = self.extract_alpha()
             block_list = []
             for h in range(0, self.h - (self.h % 8), 8):
                 for w in range(0, self.w - (self.w % 8), 8):
@@ -110,7 +129,7 @@ class Extractor:
                                 matrix = self.conjugate(matrix)
                             for i in range(8):
                                 for j in range(8):
-                                    if i > 0 and j > 0:
+                                    if i > 0 or j > 0:
                                         extracted_bit = matrix[i][j]
                                         if index % mod_index != (mod_index - 1):
                                             temp += str(extracted_bit)
