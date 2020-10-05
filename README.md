@@ -16,6 +16,12 @@ To use this project, first clone the repo on your device using the command below
 git clone https://github.com/juniardiakbar/if4020-steganografi.git
 ```
 
+Install tkinter
+
+```sh
+sudo apt install python3-tk
+```
+
 Install dependency
 
 ```sh
