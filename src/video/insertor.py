@@ -103,6 +103,11 @@ class Inserter:
             raise RuntimeError(error)
 
         return self.frames
+    
+    def is_make_error(self, message_size):
+        width, height = self.resolution
+        maks_size = (0.9 * self.number_of_frames * width * height * 3) // 8
+        return message_size > maks_size
 
     def insert_message(self, is_encrypt = False, is_random_frame = False, is_random_pixel = False):
         self.seed = self.count_seed()
@@ -110,6 +115,11 @@ class Inserter:
         self.string_message = len_message + '#' + self.extension + '#' + self.message
         self.encrypt_message(is_encrypt, self.key)
 
+        if (self.is_make_error(len(self.string_message))):
+            error = 'Ukuran pesan melebihi kapasitas payload!'
+            messagebox.showerror("Kesalahan", error)
+            raise RuntimeError(error)
+        
         bits = map(int, ''.join(
             [bin(ord(i)).lstrip('0b').rjust(8, '0') for i in self.string_message]))
         self.array_bit = list(bits)
